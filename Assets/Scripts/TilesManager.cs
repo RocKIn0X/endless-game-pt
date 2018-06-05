@@ -11,6 +11,7 @@ public class TilesManager : MonoBehaviour {
     private float tileLength = 15.0f;
     private float safeZone = 60f;
     private int amountTileOnScreen = 6;
+    private int lastPrefabIndex = 0;
     private List<GameObject> activeTiles;
 
 	// Use this for initialization
@@ -20,7 +21,10 @@ public class TilesManager : MonoBehaviour {
 
         for (int i = 0; i < amountTileOnScreen; i++)
         {
-            SpawnTile();
+            if (i < 2)
+                SpawnTile(0);
+            else
+                SpawnTile();
         }
 	}
 	
@@ -37,7 +41,11 @@ public class TilesManager : MonoBehaviour {
     void SpawnTile (int prefabIndex = -1)
     {
         GameObject tileObject;
-        tileObject = Instantiate(tilePrefabs[0]) as GameObject;
+
+        if (prefabIndex == -1)
+            tileObject = Instantiate(tilePrefabs[RandomPrefabIndex()]) as GameObject;
+        else
+            tileObject = Instantiate(tilePrefabs[prefabIndex]) as GameObject;
         tileObject.transform.SetParent(transform);
         tileObject.transform.position = Vector3.right * spawnX;
         spawnX += tileLength;
@@ -48,5 +56,22 @@ public class TilesManager : MonoBehaviour {
     {
         Destroy(activeTiles[0]);
         activeTiles.RemoveAt(0);
+    }
+    
+    int RandomPrefabIndex()
+    {
+        if (tilePrefabs.Length <= 1)
+        {
+            return 0;
+        }
+
+        int randomIndex = lastPrefabIndex;
+        while (randomIndex == lastPrefabIndex)
+        {
+            randomIndex = Random.Range(0, tilePrefabs.Length);
+        }
+
+        lastPrefabIndex = randomIndex;
+        return randomIndex;
     }
 }
