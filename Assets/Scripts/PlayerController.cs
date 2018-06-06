@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +8,10 @@ public class PlayerController : MonoBehaviour {
     public float speed;
     public float force;
     public Text scoreText;
+    public TextMeshProUGUI endScoreText;
+    public GameObject endPanel;
 
+    private bool isEndGame = false;
     private float horizontal_dir;
     private float jump;
     private float z_min;
@@ -22,10 +26,12 @@ public class PlayerController : MonoBehaviour {
         speed = 0.3f;
         score = 0;
         scoreToNextLevel = 20;
-        scoreText.text = "Score: " + score.ToString();
         z_min = -6.5f;
         z_max = 6.5f;
-	}
+        scoreText.text = "Score: " + score.ToString();
+        endScoreText.text = "Your score: " + score.ToString();
+        endPanel.SetActive(false);
+    }
 	
 	// Update is called once per frame
 	void FixedUpdate () {
@@ -45,20 +51,26 @@ public class PlayerController : MonoBehaviour {
     {
         if (collision.gameObject.CompareTag("Tile"))
         {
-            score += 1;
-            scoreText.text = "Score: " + score.ToString();
-
-            if (score >= scoreToNextLevel)
+            if (!isEndGame)
             {
-                speed += 0.1f;
-                scoreToNextLevel += 20;
+                score += 1;
+                scoreText.text = "Score: " + score.ToString();
+
+                if (score >= scoreToNextLevel)
+                {
+                    speed += 0.1f;
+                    scoreToNextLevel += 20;
+                }
             }
         }
 
         if (collision.gameObject.CompareTag("Obstacle"))
         {
-            Debug.Log("Hit obstacle");
+            Debug.Log("End game");
             speed = 0;
+            endScoreText.text = "Your score: " + score.ToString();
+            endPanel.SetActive(true);
+            isEndGame = true;
         }
     }
 }
