@@ -14,10 +14,14 @@ public class TilesManager : MonoBehaviour {
     private int lastPrefabIndex = 0;
     private List<GameObject> activeTiles;
 
+    ObjectPooler objectPooler;
+
 	// Use this for initialization
 	void Start () {
         playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
         activeTiles = new List<GameObject>();
+
+        objectPooler = ObjectPooler.Instance;
 
         for (int i = 0; i < amountTileOnScreen; i++)
         {
@@ -40,12 +44,19 @@ public class TilesManager : MonoBehaviour {
 
     void SpawnTile (int prefabIndex = -1)
     {
-        GameObject tileObject;
+        GameObject tileObject = null;
 
         if (prefabIndex == -1)
-            tileObject = Instantiate(tilePrefabs[RandomPrefabIndex()]) as GameObject;
+        {
+            tileObject = objectPooler.SpawnFromPool(tilePrefabs[RandomPrefabIndex()], Vector3.right * spawnX, Quaternion.identity) as GameObject;
+            print(tileObject.transform.position);
+        }
+
         else
-            tileObject = Instantiate(tilePrefabs[prefabIndex]) as GameObject;
+        {
+            tileObject = objectPooler.SpawnFromPool(tilePrefabs[0], Vector3.right * spawnX, Quaternion.identity) as GameObject;
+        }
+            
         tileObject.transform.SetParent(transform);
         tileObject.transform.position = Vector3.right * spawnX;
         spawnX += tileLength;
@@ -54,7 +65,7 @@ public class TilesManager : MonoBehaviour {
 
     void DestroyTile()
     {
-        Destroy(activeTiles[0]);
+        activeTiles[0].SetActive(false);
         activeTiles.RemoveAt(0);
     }
     

@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour {
         rb = GetComponent<Rigidbody>();
         speed = 0.3f;
         score = 0;
-        scoreToNextLevel = 10;
+        scoreToNextLevel = 20;
         scoreText.text = "Score: " + score.ToString();
         z_min = -6.5f;
         z_max = 6.5f;
@@ -51,7 +51,7 @@ public class PlayerController : MonoBehaviour {
             if (score >= scoreToNextLevel)
             {
                 speed += 0.1f;
-                scoreToNextLevel += 10;
+                scoreToNextLevel += 20;
             }
         }
 

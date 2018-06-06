@@ -24,11 +24,13 @@ public class ObjectPooler : MonoBehaviour {
     #endregion
 
     public List<Pool> poolList;
-    public Dictionary<string, Queue<GameObject>> poolDictionary;
+    //public Dictionary<string, Queue<GameObject>> poolDictionary;
+    public Dictionary<GameObject, Queue<GameObject>> poolDictionary;
 
-	// Use this for initialization
-	void Start () {
-        poolDictionary = new Dictionary<string, Queue<GameObject>>();
+    // Use this for initialization
+    void Start () {
+        //poolDictionary = new Dictionary<string, Queue<GameObject>>();
+        poolDictionary = new Dictionary<GameObject, Queue<GameObject>>();
 
         foreach (Pool pool in poolList)
         {
@@ -41,26 +43,46 @@ public class ObjectPooler : MonoBehaviour {
                 objectPool.Enqueue(obj);
             }
 
-            poolDictionary.Add(pool.tag, objectPool);
+            //poolDictionary.Add(pool.tag, objectPool);
+            poolDictionary.Add(pool.prefab, objectPool);
         }
-	}
-	
-	public GameObject SpawnFromPool (string tag, Vector3 position, Quaternion rotation)
+    }
+
+    public GameObject SpawnFromPool(GameObject go, Vector3 position, Quaternion rotation)
     {
-        if (!poolDictionary.ContainsKey(tag))
+        if (!poolDictionary.ContainsKey(go))
         {
-            Debug.LogWarning("Pool with tag " + tag + " doesn't exist");
+            Debug.LogWarning("Pool with game object " + go + " doesn't exist");
             return null;
         }
 
-        GameObject objectToSpawn = poolDictionary[tag].Dequeue();
+        GameObject objectToSpawn = poolDictionary[go].Dequeue();
 
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
         objectToSpawn.transform.rotation = rotation;
 
-        poolDictionary[tag].Enqueue(objectToSpawn);
+        poolDictionary[go].Enqueue(objectToSpawn);
 
         return objectToSpawn;
     }
-}
+        /*public GameObject SpawnFromPool (string tag, Vector3 position, Quaternion rotation)
+        {
+            if (!poolDictionary.ContainsKey(tag))
+            {
+                Debug.LogWarning("Pool with tag " + tag + " doesn't exist");
+                return null;
+            }
+
+            GameObject objectToSpawn = poolDictionary[tag].Dequeue();
+
+            objectToSpawn.SetActive(true);
+            objectToSpawn.transform.position = position;
+            objectToSpawn.transform.rotation = rotation;
+
+            poolDictionary[tag].Enqueue(objectToSpawn);
+
+            return objectToSpawn;
+        }
+        */
+    }
