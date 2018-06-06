@@ -7,17 +7,20 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour {
     public float speed;
     public float force;
-    public Text scoreText;
+    public TextMeshProUGUI scoreText;
     public TextMeshProUGUI endScoreText;
+    public TextMeshProUGUI highScoreText;
     public GameObject endPanel;
 
-    private bool isEndGame = false;
+    private bool isEndGame;
+    private bool isNewHighScore;
     private float horizontal_dir;
     private float jump;
     private float z_min;
     private float z_max;
     private int score;
     private int scoreToNextLevel;
+    private string highscore = "Highscore";
     private Rigidbody rb;
 
 	// Use this for initialization
@@ -31,6 +34,9 @@ public class PlayerController : MonoBehaviour {
         scoreText.text = "Score: " + score.ToString();
         endScoreText.text = "Your score: " + score.ToString();
         endPanel.SetActive(false);
+        isEndGame = false;
+        isNewHighScore = false;
+        highScoreText.text = "Highscore: " + PlayerPrefs.GetInt(highscore, 0).ToString();
     }
 	
 	// Update is called once per frame
@@ -61,12 +67,19 @@ public class PlayerController : MonoBehaviour {
                     speed += 0.1f;
                     scoreToNextLevel += 20;
                 }
+
+                if (score > PlayerPrefs.GetInt(highscore, 0))
+                {
+                    PlayerPrefs.SetInt(highscore, score);
+                    highScoreText.text = "Highscore: " + PlayerPrefs.GetInt(highscore, 0).ToString();
+                    isNewHighScore = true;
+                }
             }
         }
 
         if (collision.gameObject.CompareTag("Obstacle"))
         {
-            Debug.Log("End game");
+            //Debug.Log("End game");
             speed = 0;
             endScoreText.text = "Your score: " + score.ToString();
             endPanel.SetActive(true);
