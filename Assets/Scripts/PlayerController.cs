@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
-    public float speed = 5f;
-    public float force = 10f;
+    public float speed;
+    public float force;
     public Text scoreText;
 
     private float horizontal_dir;
@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody>();
+        speed = 0.3f;
         score = 0;
         scoreToNextLevel = 10;
         scoreText.text = "Score: " + score.ToString();
