@@ -74,7 +74,15 @@ public class PlayerController : MonoBehaviour {
                 {
                     PlayerPrefs.SetInt(stringHighscore, score);
                     highScoreText.text = "Highscore: " + PlayerPrefs.GetInt(stringHighscore, 0).ToString();
+
+                    if (!isNewHighScore)
+                    {
+                        FindObjectOfType<AudioManager>().Play("Highscore");
+                    }
+                    
                     isNewHighScore = true;
+                    //FindObjectOfType<AudioManager>().Play("Magic pass");
+                    
                 }
             }
         }
