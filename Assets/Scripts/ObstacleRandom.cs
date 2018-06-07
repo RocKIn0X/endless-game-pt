@@ -11,7 +11,7 @@ public class ObstacleRandom : MonoBehaviour {
 
     float RandomZpos()
     {
-        float z = Random.Range(-4, 4);
+        float z = Random.Range(-4, 5);
 
         return z;
     }

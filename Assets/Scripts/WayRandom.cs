@@ -12,8 +12,7 @@ public class WayRandom : MonoBehaviour {
 
     float RandomZpos()
     {
-        float z = Random.Range(-4, 4);
-        print("Random z: " + z);
+        float z = Random.Range(-4, 5);
 
         return z;
     }

@@ -20,11 +20,12 @@ public class PlayerController : MonoBehaviour {
     private float z_max;
     private int score;
     private int scoreToNextLevel;
-    private string highscore = "Highscore";
+    private int highscore;
+    private string stringHighscore = "Highscore";
     private Rigidbody rb;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         rb = GetComponent<Rigidbody>();
         speed = 0.3f;
         score = 0;
@@ -33,10 +34,11 @@ public class PlayerController : MonoBehaviour {
         z_max = 6.5f;
         scoreText.text = "Score: " + score.ToString();
         endScoreText.text = "Your score: " + score.ToString();
+        highscore = PlayerPrefs.GetInt(stringHighscore, 0);
+        highScoreText.text = "Highscore: " + highscore.ToString();
         endPanel.SetActive(false);
         isEndGame = false;
         isNewHighScore = false;
-        highScoreText.text = "Highscore: " + PlayerPrefs.GetInt(highscore, 0).ToString();
     }
 	
 	// Update is called once per frame
@@ -68,10 +70,10 @@ public class PlayerController : MonoBehaviour {
                     scoreToNextLevel += 20;
                 }
 
-                if (score > PlayerPrefs.GetInt(highscore, 0))
+                if (score > highscore)
                 {
-                    PlayerPrefs.SetInt(highscore, score);
-                    highScoreText.text = "Highscore: " + PlayerPrefs.GetInt(highscore, 0).ToString();
+                    PlayerPrefs.SetInt(stringHighscore, score);
+                    highScoreText.text = "Highscore: " + PlayerPrefs.GetInt(stringHighscore, 0).ToString();
                     isNewHighScore = true;
                 }
             }
@@ -85,5 +87,16 @@ public class PlayerController : MonoBehaviour {
             endPanel.SetActive(true);
             isEndGame = true;
         }
+    }
+
+    public int GetHighscore()
+    {
+        return highscore;
+    }
+
+    public void resetHighScore ()
+    {
+        highscore = 0;
+        PlayerPrefs.DeleteAll();
     }
 }

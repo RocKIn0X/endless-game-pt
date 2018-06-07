@@ -6,20 +6,29 @@ public class TilesManager : MonoBehaviour {
 
     public GameObject[] tilePrefabs;
 
+    private GameObject player;
     private Transform playerTransform;
     private float spawnX = 0.0f;
     private float tileLength = 30.0f;
     private float safeZone = 90f;
     private int amountTileOnScreen = 6;
     private int lastPrefabIndex = 0;
+    private int countForHighscore;
+    private int highscore;
+    private bool isShowHighscore;
     private List<GameObject> activeTiles;
 
     ObjectPooler objectPooler;
 
 	// Use this for initialization
 	void Start () {
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player");
+        playerTransform = player.transform;
         activeTiles = new List<GameObject>();
+        highscore = player.GetComponent<PlayerController>().GetHighscore();
+        print("Highscore is: " + highscore);
+        countForHighscore = 0;
+        isShowHighscore = false;
 
         objectPooler = ObjectPooler.Instance;
 
@@ -49,7 +58,6 @@ public class TilesManager : MonoBehaviour {
         if (prefabIndex == -1)
         {
             tileObject = objectPooler.SpawnFromPool(tilePrefabs[RandomPrefabIndex()], Vector3.right * spawnX, Quaternion.identity) as GameObject;
-            print(tileObject.transform.position);
         }
 
         else
@@ -61,6 +69,22 @@ public class TilesManager : MonoBehaviour {
         tileObject.transform.position = Vector3.right * spawnX;
         spawnX += tileLength;
         activeTiles.Add(tileObject);
+
+        // set highscore particle false
+        int tileChild = tileObject.transform.childCount;
+        tileObject.transform.GetChild(tileChild - 1).gameObject.SetActive(false);
+
+        // if count for highscore >= highscore show particle
+        if(countForHighscore >= highscore && isShowHighscore != true)
+        {
+            Tile tile = tileObject.GetComponent<Tile>();
+            isShowHighscore = true;
+            tileObject.transform.GetChild(tileChild - 1).gameObject.SetActive(true);
+        }
+
+        print("Highscore: " + highscore + " | Tile: " + countForHighscore + " | isShowHS: " + isShowHighscore);
+
+        countForHighscore += 1;
     }
 
     void DestroyTile()

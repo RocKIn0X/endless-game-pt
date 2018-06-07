@@ -13,7 +13,7 @@ public class OneObstacleRandom : MonoBehaviour
 
     float RandomZpos()
     {
-        float z = Random.Range(-5, 5);
+        float z = Random.Range(-5, 6);
 
         return z;
     }
