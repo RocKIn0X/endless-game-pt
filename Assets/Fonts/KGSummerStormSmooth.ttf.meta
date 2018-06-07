@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: f350104d32ca2274bad943daf1515392
+timeCreated: 1528370671
+licenseType: Pro
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: KG Summer Storm Smooth
+  fontNames:
+  - KG Summer Storm Smooth
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
