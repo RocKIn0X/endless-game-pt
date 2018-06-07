@@ -64,7 +64,8 @@ public class TilesManager : MonoBehaviour {
         {
             tileObject = objectPooler.SpawnFromPool(tilePrefabs[0], Vector3.right * spawnX, Quaternion.identity) as GameObject;
         }
-            
+        
+        // spawn object in spawnX and add to activeTiles list
         tileObject.transform.SetParent(transform);
         tileObject.transform.position = Vector3.right * spawnX;
         spawnX += tileLength;
