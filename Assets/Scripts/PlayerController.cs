@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour {
 
                     if (!isNewHighScore)
                     {
-                        FindObjectOfType<AudioManager>().Play("Highscore");
+                        FindObjectOfType<AudioManager>().Play(stringHighscore);
                     }
                     
                     isNewHighScore = true;

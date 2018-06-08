@@ -64,6 +64,8 @@ public class ObjectPooler : MonoBehaviour {
 
         poolDictionary[go].Enqueue(objectToSpawn);
 
+        Debug.Log("Return tile: " + objectToSpawn);
+
         return objectToSpawn;
     }
         /*public GameObject SpawnFromPool (string tag, Vector3 position, Quaternion rotation)
